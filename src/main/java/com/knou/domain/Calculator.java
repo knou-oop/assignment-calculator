@@ -1,5 +1,8 @@
 package com.knou.domain;
 
+import static com.knou.view.InputValidator.NUMBER_REGEX;
+import static com.knou.view.InputValidator.OPERATOR_REGEX;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -8,8 +11,6 @@ import java.util.Map;
 import java.util.Stack;
 
 public class Calculator {
-
-    public static String OPERATOR_REGEX = "[+\\-*/=]";
     private final ArrayList<String> inputExpression;
     Map<String, Integer> operatorRank = Map.of("+", 1, "-", 1, "*", 2, "/", 2);
 
@@ -17,7 +18,13 @@ public class Calculator {
         this.inputExpression = inputExpression;
     }
 
+    /**
+     * 계산기를 통한 연산
+     * @param log 비어있는 log 받음
+     * @return 계산과정 및 결과가 포함된 log 반환
+     */
     public Log calculateStart(Log log) {
+        //중위표현법을 후위표현법으로 변환
         ArrayList<String> postfix = convertToPostfix(inputExpression);
         return calculatePostfix(postfix, log);
     }
@@ -25,11 +32,11 @@ public class Calculator {
     public ArrayList<String> convertToPostfix(ArrayList<String> expression) {
         ArrayList<String> postfix = new ArrayList<>();
         Stack<String> operateStack = new Stack<>();
-
         for (String s : expression) {
             if (!s.matches(OPERATOR_REGEX)) {
                 postfix.add(s);
             } else {
+                //스택이 비어있지 않거나, 우선순위가 작거나 같으면 스택에 넣지않고 배열에 넣는다.
                 if (!operateStack.isEmpty() && operatorRank.get(operateStack.peek()) >= operatorRank.get(s)) {
                     postfix.add(operateStack.pop());
                 }
@@ -47,7 +54,7 @@ public class Calculator {
     public Log calculatePostfix(ArrayList<String> postfix, Log log) {
         Stack<String> operateStack = new Stack<>();
         for (String s : postfix) {
-            if (!s.matches(OPERATOR_REGEX)) {
+            if (s.matches(NUMBER_REGEX)) {
                 operateStack.push(s);
             } else {
                 String number2 = operateStack.pop();
@@ -78,8 +85,7 @@ public class Calculator {
                 double doubleResult = Double.parseDouble(number) / Double.parseDouble(number2);
                 String result = new BigDecimal(doubleResult).setScale(2, RoundingMode.HALF_UP).toString();
                 log.addHistory(number, number2, operator, result);
-                String resultString = String.valueOf((int) Double.parseDouble(result));
-                return resultString;
+                return String.valueOf((int) Double.parseDouble(result));
             }
             case ("*") -> {
                 int result = Integer.parseInt(number) * Integer.parseInt(number2);

@@ -13,4 +13,9 @@ public class LogRepository {
     public Log findLatestLog() {
         return logRepository.get(logRepository.size() - 1);
     }
+
+    public ArrayList<Log> getAllLogs(){
+        return new ArrayList<>(logRepository);
+
+    }
 }
