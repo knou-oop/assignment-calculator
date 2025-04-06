@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class View {
-    static final String CALCULATOR_NUMBER_INPUT_GUIDE = "계산할 숫자를 입력해주세요.";
-    static final String CALCULATOR_OPERATOR_INPUT_GUIDE = "+,-,*,/,= 등의 계산할 부호를 입력해주세요.";
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final InputValidator inputValidator;
 
@@ -31,52 +29,58 @@ public class View {
 
     private String inputNumber() {
         try {
-            System.out.println(CALCULATOR_NUMBER_INPUT_GUIDE);
+            System.out.println(ViewMessage.CALCULATOR_NUMBER_INPUT_GUIDE.getMessage());
             String number = br.readLine();
             inputValidator.validateNumber(number);
             return number;
         } catch (IOException | NumberFormatException e) {
-            System.out.println("입력이 올바르지 않습니다. 숫자를 다시 입력해 주십시오");
+            System.out.println(ErrorMessage.ERROR_INVALID_NUMBER_INPUT.getMessage());
             return inputNumber();
         }
     }
 
     private String inputOperator() {
         try {
-            System.out.println(CALCULATOR_OPERATOR_INPUT_GUIDE);
+            System.out.println(ViewMessage.CALCULATOR_OPERATOR_INPUT_GUIDE.getMessage());
             String operator = br.readLine();
             inputValidator.validateOperator(operator);
             return operator;
         } catch (IOException | IllegalArgumentException e) {
-            System.out.println("입력이 올바르지 않습니다. 부호를 다시 입력해 주십시오");
+            System.out.println(ErrorMessage.ERROR_INVALID_OPERATOR_INPUT.getMessage());
             return inputOperator();
         }
     }
 
     public void displayResult(Log log) {
-        System.out.println("사용자가 입력한 계산식 : " + log.getExpression());
+        System.out.println(ViewMessage.USER_INPUT_EXPRESSION.getMessage() + log.getExpression());
         for (String s : log.getCalculateHistory()) {
             System.out.println(s);
         }
-        System.out.println("계산 결과 : " + log.getResult());
+        System.out.println(ViewMessage.CALCULATE_RESULT.getMessage() + log.getResult());
     }
     public boolean shouldContinue(){
-        System.out.println("계속 계산하시겠습니까?y or n 를 입력해주세요");
+        System.out.println(ViewMessage.PROMPT_CONTINUE_CALCULATION.getMessage());
         try {
-            if(br.readLine().equals("y")){
+            String userResponse = br.readLine();
+            if(userResponse.equals("y")){
                 return true;
-            } else if (br.readLine().equals("n")) {
+            } else if (userResponse.equals("n")) {
                 return false;
             }else {
                 throw new IllegalArgumentException();
             }
 
         } catch (IOException |IllegalArgumentException e) {
-            System.out.println("입력이 올바르지 않습니다. y 또는 n으로 입력해주세요");
+            System.out.println(ErrorMessage.ERROR_INVALID_YES_NO_INPUT.getMessage());
             return shouldContinue();
         }
-
     }
 
-
+    public void displayAllHistory(ArrayList<Log> allHistory) {
+        System.out.println(ViewMessage.CALCULATOR_ALL_HISTORY.getMessage());
+        for (Log log:allHistory) {
+            System.out.println(log.getExpression()+" " + log.getResult());
+        }
+        System.out.println(ViewMessage.CALCULATOR_END.getMessage());
+    }
 }
