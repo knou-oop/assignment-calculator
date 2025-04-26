@@ -1,36 +1,39 @@
 package com.knou.calculator;
 
+import com.knou.calculator.operator.OperatorRegistry;
+import com.knou.calculator.token.Token;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.ArrayDeque;
 
 public class Converter {
-    public static List<String> toPostfix(List<String> tokens) {
-        List<String> output = new ArrayList<>();
-        Deque<String> stack = new ArrayDeque<>();
+    public static List<Token> toPostfix(List<Token> tokens) {
+        List<Token> output = new ArrayList<>();
+        Deque<Token> stack = new ArrayDeque<>();
 
-        for (String token : tokens) {
-            if (token.matches("\\d+")) {
+        for (Token token : tokens) {
+            if (token.isOperand()) {
                 output.add(token);
-            } else if (token.equals("(")) {
+            } else if (token.isLeftParenthesis()) {
                 stack.push(token);
-            } else if (token.equals(")")) {
-                while (!stack.isEmpty() && !stack.peek().equals("(")) {
+            } else if (token.isRightParenthesis()) {
+                while (!stack.isEmpty() && !stack.peek().isLeftParenthesis()) {
                     output.add(stack.pop());
                 }
-                if (!stack.isEmpty() && stack.peek().equals("(")) {
+                if (!stack.isEmpty() && stack.peek().isLeftParenthesis()) {
                     stack.pop(); // remove (
                 }
-            } else if (Registry.contains(token)) {
+            } else if (token.isOperator() && OperatorRegistry.contains(token.getSymbol())) {
                 while (!stack.isEmpty()
-                        && !stack.peek().equals("(")
-                        && Registry.get(stack.peek()).getPrecedence() >= Registry.get(token).getPrecedence()) {
+                        && !stack.peek().isLeftParenthesis()
+                        && OperatorRegistry.get(stack.peek().getSymbol()).getPrecedence() >= OperatorRegistry.get(token.getSymbol()).getPrecedence()) {
                     output.add(stack.pop());
                 }
                 stack.push(token);
             } else {
-                throw new RuntimeException("알 수 없는 연산자: " + token);
+                throw new RuntimeException("알 수 없는 연산자: " + token.getSymbol());
             }
         }
 

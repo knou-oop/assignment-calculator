@@ -26,3 +26,11 @@
 ## 기간
 
 2025/03/23 ~ 2025/04/05
+
+---
+
+# 추가 수정사항
+1. Token 클래스를 정의하여 문자열과 숫자 간의 불필요한 형변환 및 혼동을 제거하고 Operand/Operator/Parenthesis 구분을 명확히 함
+2. 기존 문자열 기반 로직을 Token 객체 기반 로직으로 리팩터링
+3. Token 관련 클래스(Token, TokenType, TokenFactory, Tokenizer 등)를 token 패키지로 묶음
+4. Operator 관련 클래스(Operator, OperatorRegistry)를 operator 패키지로 묶음
