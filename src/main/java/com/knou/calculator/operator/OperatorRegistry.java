@@ -1,10 +1,10 @@
-package com.knou.calculator;
+package com.knou.calculator.operator;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Registry {
+public class OperatorRegistry {
     private static final Map<String, Operator> operators = new HashMap<>();
 
     static {
@@ -18,7 +18,7 @@ public class Registry {
         operators.put(op.getSymbol(), op);
     }
 
-    public static void register_custom(String symbol, String operator){
+    public static void registerCustom(String symbol, String operator){
         operators.put(symbol, get(operator));
     }
 

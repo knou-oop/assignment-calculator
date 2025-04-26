@@ -1,4 +1,4 @@
-package com.knou.calculator;
+package com.knou.calculator.operator;
 
 import java.util.function.BiFunction;
 

@@ -1,5 +1,9 @@
 package com.knou.calculator;
 
+import com.knou.calculator.operator.OperatorRegistry;
+import com.knou.calculator.token.Token;
+import com.knou.calculator.token.Tokenizer;
+
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -42,8 +46,8 @@ public class Calculator {
         String input = sc.nextLine().trim();
         if (input.equals("0")) return;
 
-        List<String> tokens = Tokenizer.tokenize(input);
-        List<String> postfix = Converter.toPostfix(tokens);
+        List<Token> tokens = Tokenizer.tokenize(input);
+        List<Token> postfix = Converter.toPostfix(tokens);
         double result = Evaluator.evaluate(postfix);
 
         String result_string = Formatter.format(result);
@@ -59,7 +63,7 @@ public class Calculator {
                 System.out.println("잘못된 입력입니다! 연산자로 사용할 문자 한 글자만 입력해주세요!");
             } else if (Character.isDigit(symbol.charAt(0)) && !symbol.equals("0")) {
                 System.out.println("숫자는 연산자로 사용할 수 없습니다! 연산자로 사용할 문자 한 글자만 입력해주세요!");
-            } else if (Registry.contains(symbol)) {
+            } else if (OperatorRegistry.contains(symbol)) {
                 System.out.println("이미 등록된 연산자입니다!");
             } else {
                 return symbol;
@@ -85,7 +89,7 @@ public class Calculator {
         String operation = getInputOperation(sc);
         if (operation.equals("0")) return;
 
-        Registry.register_custom(symbol, operation);
+        OperatorRegistry.registerCustom(symbol, operation);
         System.out.println(symbol + "는 " + operation + "연산으로 등록됩니다.");
     }
 

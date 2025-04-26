@@ -1,23 +1,28 @@
 package com.knou.calculator;
 
+import com.knou.calculator.operator.Operator;
+import com.knou.calculator.operator.OperatorRegistry;
+import com.knou.calculator.token.Token;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
 public class Evaluator {
-    public static Double evaluate(List<String> postfix) {
+    public static Double evaluate(List<Token> postfix) {
         Deque<Double> stack = new ArrayDeque<>();
 
-        for (String token : postfix) {
-            if (token.matches("\\d+")) {
-                stack.push(Double.parseDouble(token));
+        for (Token token : postfix) {
+            if (token.isOperand()) {
+                stack.push(token.getValue());
             } else {
-                if (stack.size() < 2) throw new RuntimeException("연산자 '" + token + "' 에 피연산자가 부족합니다");
+                String symbol = token.getSymbol();
+                if (stack.size() < 2) throw new RuntimeException("연산자 '" + symbol + "' 에 피연산자가 부족합니다");
 
                 double b = stack.pop();
                 double a = stack.pop();
-                Operator op = Registry.get(token);
-                if (op == null) throw new RuntimeException("정의되지 않은 연산자: " + token);
+                Operator op = OperatorRegistry.get(symbol);
+                if (op == null) throw new RuntimeException("정의되지 않은 연산자: " + symbol);
                 stack.push(op.apply(a, b));
             }
         }
