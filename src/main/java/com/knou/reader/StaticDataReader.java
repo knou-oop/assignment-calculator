@@ -1,4 +1,4 @@
-package com.knou;
+package com.knou.reader;
 
 public class StaticDataReader implements DataReader {
     @Override

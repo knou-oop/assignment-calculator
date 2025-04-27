@@ -1,16 +1,22 @@
-package com.knou;
+package com.knou.service;
+
+import com.knou.log.Logger;
+import com.knou.reader.DataReader;
 
 import java.util.Stack;
 
 public class Calculator {
 
     private final DataReader reader;
+    private final Logger logger;
     private String data = null;
     private Double result = null;
 
-    public Calculator(DataReader reader) {
+    public Calculator(DataReader reader, Logger logger) {
         this.reader = reader;
+        this.logger = logger;
     }
+
 
     public void readData() {
         this.data = this.reader.readData();
@@ -117,6 +123,6 @@ public class Calculator {
     public void printResult() {
         if(!this.isCalculated())
             throw new IllegalStateException("result not calculated yet");
-        System.out.println("result: " + this.result);
+        logger.logInfo("result: " + this.result);
     }
 }

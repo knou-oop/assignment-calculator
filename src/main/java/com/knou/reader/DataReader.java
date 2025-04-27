@@ -1,4 +1,4 @@
-package com.knou;
+package com.knou.reader;
 
 public interface DataReader {
 
