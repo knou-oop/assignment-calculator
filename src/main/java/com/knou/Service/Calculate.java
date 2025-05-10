@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.knou.Calurator.FourBasicCalc;
+import com.knou.Log.Interface.Log;
 import com.knou.Process.Preprocessing;
-import com.knou.Util.Log;
+import com.knou.Util.ServiceLocater;
 import com.knou.Util.Setting;
 
 /**
@@ -13,35 +14,42 @@ import com.knou.Util.Setting;
  */
 public class Calculate {
     private String formula;
+    private Log log;
     private Preprocessing preprocessing;
     private FourBasicCalc fourBasicCalc;
 
-    public Calculate(String formula) {
+    public Calculate() {
         this.formula = formula;
         this.preprocessing = new Preprocessing();
         this.fourBasicCalc = new FourBasicCalc();
+        this.log = ServiceLocater.getLogger();
     }
 
     /**
      * 계산에 필요한 전처리, 계산, 로그 기록까지의 로직을 정리한 메서드
      * @return true: 정상 처리, false: 비정상 처리
      */
-    public boolean startOperator(){
-        List<String> formulaList; // 계산 리스트
-        List<String> backFomulaList = new ArrayList<>();// 후위식 저장 리스트
+    public boolean startOperator(String str){
+        //String formalas[] = str.split("(\r\n|\r|\n|\n\r)", 0);
+        String formalas[] = str.split("=", 0);
 
-        formulaList = preprocessing.conversionStringToList(formula);
-        formulaList = preprocessing.conversionFormualToBackFormula(formulaList);
-        backFomulaList.addAll(formulaList);
-        String result = calc(formulaList);
-        // 포맷 변환
-        result = changeFormat(result);
-        Log.writeLogFile(formula, backFomulaList.toString(), result);
-        return false;
+        for (String formula : formalas) {
+            List<String> formulaList; // 계산 리스트
+            List<String> backFomulaList = new ArrayList<>();// 후위식 저장 리스트
+
+            formulaList = preprocessing.conversionStringToList(formula);
+            formulaList = preprocessing.conversionFormualToBackFormula(formulaList);
+            backFomulaList.addAll(formulaList);
+            String result = calc(formulaList);
+            // 포맷 변환
+            result = changeFormat(result);
+            log.writeLog(formula, backFomulaList.toString(), result);
+        }
+        return true;
     }
 
     /**
-     * 후위식으로 변환된 List<String> 타입의 수식을 읽어 연산자에 맞는 알맞은 계산을 실행하는 메서드
+     * 후위식으로 변환된 List< String > 타입의 수식을 읽어 연산자에 맞는 알맞은 계산을 실행하는 메서드
      * @param backFormulaList List<String> 타입의 후위식 리스트
      * @return 계산된 값
      */
