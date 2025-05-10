@@ -21,3 +21,26 @@
 ## 기간
 
 2025/03/23 ~ 2025/04/05
+
+## 변경사항
+
+### 1. 로그 출력을 DB, 파일 2가지로 가능하게 변경.
+
+### 2. 입력방식 콘솔, 파일, 실행 인자 3가지로 가능하도록 변경.
+
+### 3. 로그에 시간을 남기도록 변경.
+
+### 4. 수식 구분자 입력받을 수 있도록 변경( 기존: "\r\n" > 변경: application.properties의 formula.seperator 값 )
+
+## Log 저장 테이블 DDL
+
+mysql 8.x 버전 기준으로 작성
+
+CREATE TABLE `CalcLog` (
+  `id` tinyint NOT NULL AUTO_INCREMENT,
+  `FORMULA` varchar(100) NOT NULL,
+  `BACK_FORMULA` varchar(100) NOT NULL,
+  `RESULT` varchar(100) NOT NULL,
+  `DATE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='계산기 로그 저장 테이블';
