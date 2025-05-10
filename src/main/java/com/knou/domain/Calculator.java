@@ -3,6 +3,7 @@ package com.knou.domain;
 import static com.knou.view.InputValidator.NUMBER_REGEX;
 import static com.knou.view.InputValidator.OPERATOR_REGEX;
 
+import com.knou.exception.DivisionByZeroException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -19,16 +20,19 @@ public class Calculator {
     }
 
     /**
-     * 계산기를 통한 연산
-     * @param log 비어있는 log 받음
-     * @return 계산과정 및 결과가 포함된 log 반환
+     * 계산기의 메인 연산 메서드
+     * @param log 계산 과정과 결과를 저장할 Log 객체
+     * @return 계산이 완료된 Log 객체
      */
-    public Log calculateStart(Log log) {
-        //중위표현법을 후위표현법으로 변환
+    public Log calculateStart(Log log) throws DivisionByZeroException{
         ArrayList<String> postfix = convertToPostfix(inputExpression);
         return calculatePostfix(postfix, log);
     }
 
+    /**
+     * 중위표현법을 후위표현법으로 변환하는 메서드
+     * @return 후위표현법으로 변환된 수식
+     */
     public ArrayList<String> convertToPostfix(ArrayList<String> expression) {
         ArrayList<String> postfix = new ArrayList<>();
         Stack<String> operateStack = new Stack<>();
@@ -36,7 +40,6 @@ public class Calculator {
             if (!s.matches(OPERATOR_REGEX)) {
                 postfix.add(s);
             } else {
-                //스택이 비어있지 않거나, 우선순위가 작거나 같으면 스택에 넣지않고 배열에 넣는다.
                 if (!operateStack.isEmpty() && operatorRank.get(operateStack.peek()) >= operatorRank.get(s)) {
                     postfix.add(operateStack.pop());
                 }
@@ -51,7 +54,11 @@ public class Calculator {
         return postfix;
     }
 
-    public Log calculatePostfix(ArrayList<String> postfix, Log log) {
+    /**
+     * 후위표현법 수식을 계산하는 메서드
+     * @return 계산이 완료된 Log 객체
+     */
+    public Log calculatePostfix(ArrayList<String> postfix, Log log)throws DivisionByZeroException {
         Stack<String> operateStack = new Stack<>();
         for (String s : postfix) {
             if (s.matches(NUMBER_REGEX)) {
@@ -67,7 +74,11 @@ public class Calculator {
         return log;
     }
 
-    public String applyOperator(String number, String number2, String operator, Log log) {
+    /**
+     * 연산자를 적용하여 계산을 수행하는 메서드
+     * @return 계산 결과
+     */
+    public String applyOperator(String number, String number2, String operator, Log log) throws DivisionByZeroException {
         switch (operator) {
             case ("+") -> {
                 int result = Integer.parseInt(number) + Integer.parseInt(number2);
@@ -82,6 +93,9 @@ public class Calculator {
                 return resultString;
             }
             case ("/") -> {
+                if (Integer.parseInt(number2) == 0) {
+                    throw new DivisionByZeroException();
+                }
                 double doubleResult = Double.parseDouble(number) / Double.parseDouble(number2);
                 String result = new BigDecimal(doubleResult).setScale(2, RoundingMode.HALF_UP).toString();
                 log.addHistory(number, number2, operator, result);

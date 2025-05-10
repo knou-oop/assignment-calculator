@@ -1,22 +1,28 @@
 package com.knou.view;
 
-/**
- * 사용자 입력값의 유효성을 검증한다. 숫자와 부호(+,-,*,/)외의 다른 문자는 올 수 없다.
- */
-public class InputValidator {
+import com.knou.exception.InvalidNumberFormatException;
+import com.knou.exception.InvalidOperatorFormatException;
 
+public class InputValidator {
     public static String OPERATOR_REGEX = "[+\\-*/=]";
     public static String NUMBER_REGEX = "-?\\d+";
-    public void validateNumber(String inputNumber) throws NumberFormatException {
+
+    /**
+     * 입력된 숫자의 유효성을 검증하는 메서드
+     */
+    public void validateNumber(String inputNumber) throws InvalidNumberFormatException {
         if (!inputNumber.matches(NUMBER_REGEX)) {
-            throw new NumberFormatException();
+            throw new InvalidNumberFormatException();
         }
     }
 
-    public void validateOperator(String input) throws IllegalArgumentException {
+    /**
+     * 입력된 연산자의 유효성을 검증하는 메서드
+     */
+    public void validateOperator(String input) throws InvalidOperatorFormatException {
         if (input.matches(OPERATOR_REGEX)) {
             return;
         }
-        throw new IllegalArgumentException();
+        throw new InvalidOperatorFormatException();
     }
 }
