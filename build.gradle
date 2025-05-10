@@ -4,6 +4,7 @@ plugins {
 
 group = 'com.knou'
 version = '1.0-SNAPSHOT'
+// mainClassName = 'com.knou.Main'
 
 repositories {
     mavenCentral()
@@ -12,6 +13,9 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation("com.mysql:mysql-connector-j:8.3.0")
 }
 
 sourceSets {
@@ -28,4 +32,20 @@ java {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.knou.Main'
+        )
+    }
+
+    // 모든 의존성을 JAR에 포함
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    // 중복 파일 처리 전략
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
