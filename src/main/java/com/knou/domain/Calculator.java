@@ -82,15 +82,11 @@ public class Calculator {
         switch (operator) {
             case ("+") -> {
                 int result = Integer.parseInt(number) + Integer.parseInt(number2);
-                String resultString = String.valueOf(result);
-                log.addHistory(number, number2, operator, resultString);
-                return resultString;
+                return String.valueOf(result);
             }
             case ("-") -> {
                 int result = Integer.parseInt(number) - Integer.parseInt(number2);
-                String resultString = String.valueOf(result);
-                log.addHistory(number, number2, operator, resultString);
-                return resultString;
+                return String.valueOf(result);
             }
             case ("/") -> {
                 if (Integer.parseInt(number2) == 0) {
@@ -98,14 +94,11 @@ public class Calculator {
                 }
                 double doubleResult = Double.parseDouble(number) / Double.parseDouble(number2);
                 String result = new BigDecimal(doubleResult).setScale(2, RoundingMode.HALF_UP).toString();
-                log.addHistory(number, number2, operator, result);
                 return String.valueOf((int) Double.parseDouble(result));
             }
             case ("*") -> {
                 int result = Integer.parseInt(number) * Integer.parseInt(number2);
-                String resultString = String.valueOf(result);
-                log.addHistory(number, number2, operator, resultString);
-                return resultString;
+                return String.valueOf(result);
             }
         }
         return "";

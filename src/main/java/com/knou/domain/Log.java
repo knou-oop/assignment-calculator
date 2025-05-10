@@ -1,5 +1,7 @@
 package com.knou.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +12,7 @@ public class Log {
     private final String expression;
     private final ArrayList<String> calculateHistory;
     private String result;
+    private LocalDateTime timeTemplate;
 
     /**
      * Log 생성자
@@ -19,6 +22,7 @@ public class Log {
         this.expression = expression;
         this.result = "";
         this.calculateHistory = new ArrayList<>();
+        this.timeTemplate = LocalDateTime.now();
     }
 
     /**
@@ -52,17 +56,6 @@ public class Log {
     }
 
     /**
-     * 계산 과정을 기록하는 메서드
-     * @param number1 첫 번째 피연산자
-     * @param number2 두 번째 피연산자
-     * @param operator 연산자
-     * @param result 계산 결과
-     */
-    public void addHistory(String number1, String number2, String operator, String result) {
-        this.calculateHistory.add(number1 + operator + number2 + " = " + result);
-    }
-
-    /**
      * 계산식을 반환하는 메서드
      * @return 계산식
      */
@@ -70,11 +63,13 @@ public class Log {
         return expression;
     }
 
-    /**
-     * 계산 과정을 반환하는 메서드
-     * @return 계산 과정이 담긴 리스트
-     */
-    public ArrayList<String> getCalculateHistory() {
-        return calculateHistory;
+    public LocalDateTime getTimeTemplate() {
+        return timeTemplate;
     }
+
+    public String getHistoryLog(){
+        return "["+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))+"] "
+                +expression + " " +result;
+    }
+
 }

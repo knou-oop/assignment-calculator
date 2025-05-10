@@ -86,9 +86,6 @@ public class View {
      */
     public void displayResult(Log log) {
         System.out.println(ViewMessage.USER_INPUT_EXPRESSION.getMessage() + log.getExpression());
-        for (String s : log.getCalculateHistory()) {
-            System.out.println(s);
-        }
         System.out.println(ViewMessage.CALCULATE_RESULT.getMessage() + log.getResult());
     }
 
@@ -123,7 +120,7 @@ public class View {
     public void displayAllHistory(ArrayList<Log> allHistory) {
         System.out.println(ViewMessage.CALCULATOR_ALL_HISTORY.getMessage());
         for (Log log : allHistory) {
-            System.out.println(log.getExpression() + " " + log.getResult());
+            System.out.println(log.getHistoryLog());
         }
         System.out.println(ViewMessage.CALCULATOR_END.getMessage());
     }
