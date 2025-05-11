@@ -1,5 +1,6 @@
 package com.knou.exception;
 
+import com.knou.common.CalculatorException;
 import com.knou.view.ErrorMessage;
 public class InvalidYesNoInputException extends CalculatorException {
     public InvalidYesNoInputException() {

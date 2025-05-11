@@ -16,6 +16,5 @@ public class LogRepository {
 
     public ArrayList<Log> getAllLogs(){
         return new ArrayList<>(logRepository);
-
     }
 }

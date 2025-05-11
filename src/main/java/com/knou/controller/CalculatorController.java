@@ -1,8 +1,10 @@
 package com.knou.controller;
 
 import com.knou.domain.Log;
-import com.knou.exception.DivisionByZeroException;
+import com.knou.domain.exception.DivisionByZeroException;
+import com.knou.common.ExceptionHandler;
 import com.knou.service.CalculatorService;
+import com.knou.service.LogFileService;
 import com.knou.view.View;
 import java.util.ArrayList;
 
@@ -13,10 +15,12 @@ import java.util.ArrayList;
 public class CalculatorController {
     private final View view;
     private final CalculatorService calculatorService;
+    private final LogFileService logFileService;
 
-    public CalculatorController(View view, CalculatorService calculatorService) {
+    public CalculatorController(View view, CalculatorService calculatorService,LogFileService logFileService) {
         this.view = view;
         this.calculatorService = calculatorService;
+        this.logFileService = logFileService;
     }
 
     /**
@@ -32,10 +36,12 @@ public class CalculatorController {
                 calculatorRun();
             }else {
                 ArrayList<Log> allHistory = calculatorService.getAllHistory();
-                view.displayAllHistory(allHistory);
+                String logFilePath = logFileService.createLogFilePath();
+                logFileService.writeCalculationHistory(allHistory,logFilePath);
+                view.displayAllHistory(logFileService.readLogs(logFilePath));
             }
         }catch (DivisionByZeroException e){
-            System.out.println("0으로 나눌 수 없습니다. 다시 처음부터 입력해주세요.");
+            ExceptionHandler.getInstance().handleCalculatorException(e);
             calculatorRun();
         }
 

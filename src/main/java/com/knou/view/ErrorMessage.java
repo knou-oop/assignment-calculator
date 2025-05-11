@@ -7,6 +7,7 @@ public enum ErrorMessage {
     ERROR_DIVISION_BY_ZERO("0으로 나눌 수 없습니다."),
     ERROR_LOG_FILE_WRITE("로그파일 기록에 실패하였습니다."),
     ERROR_LOG_FILE_READ("로그파일 조회에 실패하였습니다."),
+    ERROR_FAIL_DELETE_OLD_LOG_FILE("기존 로그파일 삭제에 실패하였습니다."),
     ERROR_NUMBER_RANGE("계산 결과가 허용된 범위를 초과했습니다."),
     ERROR_CALCULATION("계산 중 오류가 발생했습니다");
 
@@ -16,7 +17,8 @@ public enum ErrorMessage {
     ErrorMessage(String message) {
         this.message = message;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return this.message;
     }
 }

@@ -2,8 +2,7 @@ package com.knou.service;
 
 import com.knou.domain.Calculator;
 import com.knou.domain.Log;
-import com.knou.exception.CalculatorException;
-import com.knou.exception.DivisionByZeroException;
+import com.knou.common.CalculatorException;
 import com.knou.repository.LogRepository;
 import java.util.ArrayList;
 

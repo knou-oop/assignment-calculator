@@ -1,6 +1,4 @@
-package com.knou.exception;
-
-import com.knou.view.ErrorMessage;
+package com.knou.common;
 
 public class ExceptionHandler {
     private static final ExceptionHandler instance = new ExceptionHandler();

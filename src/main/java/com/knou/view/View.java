@@ -1,14 +1,14 @@
 package com.knou.view;
 
 import com.knou.domain.Log;
-import com.knou.domain.LogWriter;
-import com.knou.exception.CalculatorException;
-import com.knou.exception.ExceptionHandler;
+import com.knou.common.CalculatorException;
+import com.knou.common.ExceptionHandler;
 import com.knou.exception.InvalidYesNoInputException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 사용자 인터페이스를 담당하는 클래스
@@ -17,15 +17,13 @@ import java.util.ArrayList;
 public class View {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final InputValidator inputValidator;
-    private final LogWriter logWriter;
 
     /**
      * View 생성자
      * @param inputValidator 입력값 검증을 담당하는 객체
      */
-    public View(InputValidator inputValidator,LogWriter logWriter) {
+    public View(InputValidator inputValidator) {
         this.inputValidator = inputValidator;
-        this.logWriter = logWriter;
     }
 
     /**
@@ -124,10 +122,9 @@ public class View {
      * 모든 계산 기록을 출력하는 메서드
      * @param allHistory 모든 계산 기록이 담긴 리스트
      */
-    public void displayAllHistory(ArrayList<Log> allHistory) {
+    public void displayAllHistory(ArrayList<String> allHistory) {
         System.out.println(ViewMessage.CALCULATOR_ALL_HISTORY.getMessage());
-        String logFilePath = logWriter.writeLog(allHistory);
-        for (String log:logWriter.readLogs(logFilePath)) {
+        for (String log:allHistory) {
             System.out.println(log);
         }
         System.out.println(ViewMessage.CALCULATOR_END.getMessage());

@@ -3,8 +3,8 @@ package com.knou.domain;
 import static com.knou.view.InputValidator.NUMBER_REGEX;
 import static com.knou.view.InputValidator.OPERATOR_REGEX;
 
-import com.knou.exception.CalculatorException;
-import com.knou.exception.DivisionByZeroException;
+import com.knou.common.CalculatorException;
+import com.knou.domain.exception.DivisionByZeroException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.knou.exception;
+package com.knou.common;
 
 import com.knou.view.ErrorMessage;
 

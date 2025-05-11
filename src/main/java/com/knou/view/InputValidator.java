@@ -1,6 +1,6 @@
 package com.knou.view;
 
-import com.knou.exception.CalculatorException;
+import com.knou.common.CalculatorException;
 import com.knou.exception.InvalidNumberFormatException;
 import com.knou.exception.InvalidOperatorFormatException;
 
