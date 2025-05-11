@@ -3,6 +3,7 @@ package com.knou.domain;
 import static com.knou.view.InputValidator.NUMBER_REGEX;
 import static com.knou.view.InputValidator.OPERATOR_REGEX;
 
+import com.knou.exception.CalculatorException;
 import com.knou.exception.DivisionByZeroException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,7 +25,7 @@ public class Calculator {
      * @param log 계산 과정과 결과를 저장할 Log 객체
      * @return 계산이 완료된 Log 객체
      */
-    public Log calculateStart(Log log) throws DivisionByZeroException{
+    public Log calculateStart(Log log) throws CalculatorException {
         ArrayList<String> postfix = convertToPostfix(inputExpression);
         return calculatePostfix(postfix, log);
     }
@@ -58,7 +59,7 @@ public class Calculator {
      * 후위표현법 수식을 계산하는 메서드
      * @return 계산이 완료된 Log 객체
      */
-    public Log calculatePostfix(ArrayList<String> postfix, Log log)throws DivisionByZeroException {
+    public Log calculatePostfix(ArrayList<String> postfix, Log log)throws CalculatorException {
         Stack<String> operateStack = new Stack<>();
         for (String s : postfix) {
             if (s.matches(NUMBER_REGEX)) {
@@ -78,7 +79,7 @@ public class Calculator {
      * 연산자를 적용하여 계산을 수행하는 메서드
      * @return 계산 결과
      */
-    public String applyOperator(String number, String number2, String operator, Log log) throws DivisionByZeroException {
+    public String applyOperator(String number, String number2, String operator, Log log) throws CalculatorException {
         switch (operator) {
             case ("+") -> {
                 int result = Integer.parseInt(number) + Integer.parseInt(number2);

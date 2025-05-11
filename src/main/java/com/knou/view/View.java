@@ -1,6 +1,7 @@
 package com.knou.view;
 
 import com.knou.domain.Log;
+import com.knou.domain.LogWriter;
 import com.knou.exception.CalculatorException;
 import com.knou.exception.ExceptionHandler;
 import com.knou.exception.InvalidYesNoInputException;
@@ -16,13 +17,15 @@ import java.util.ArrayList;
 public class View {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final InputValidator inputValidator;
+    private final LogWriter logWriter;
 
     /**
      * View 생성자
      * @param inputValidator 입력값 검증을 담당하는 객체
      */
-    public View(InputValidator inputValidator) {
+    public View(InputValidator inputValidator,LogWriter logWriter) {
         this.inputValidator = inputValidator;
+        this.logWriter = logWriter;
     }
 
     /**
@@ -96,14 +99,7 @@ public class View {
     public boolean shouldContinue() {
         System.out.println(ViewMessage.PROMPT_CONTINUE_CALCULATION.getMessage());
         try {
-            String userResponse = br.readLine();
-            if (userResponse.equals("y")) {
-                return true;
-            } else if (userResponse.equals("n")) {
-                return false;
-            } else {
-                throw new InvalidYesNoInputException();
-            }
+            return askYesOrNo();
         } catch (InvalidYesNoInputException e) {
             ExceptionHandler.getInstance().handleCalculatorException(e);
             return shouldContinue();
@@ -113,14 +109,26 @@ public class View {
         }
     }
 
+    private boolean askYesOrNo() throws IOException {
+        String userResponse = br.readLine();
+        if (userResponse.equals("y")) {
+            return true;
+        } else if (userResponse.equals("n")) {
+            return false;
+        } else {
+            throw new InvalidYesNoInputException();
+        }
+    }
+
     /**
      * 모든 계산 기록을 출력하는 메서드
      * @param allHistory 모든 계산 기록이 담긴 리스트
      */
     public void displayAllHistory(ArrayList<Log> allHistory) {
         System.out.println(ViewMessage.CALCULATOR_ALL_HISTORY.getMessage());
-        for (Log log : allHistory) {
-            System.out.println(log.getHistoryLog());
+        String logFilePath = logWriter.writeLog(allHistory);
+        for (String log:logWriter.readLogs(logFilePath)) {
+            System.out.println(log);
         }
         System.out.println(ViewMessage.CALCULATOR_END.getMessage());
     }

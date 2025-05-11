@@ -2,6 +2,7 @@ package com.knou.service;
 
 import com.knou.domain.Calculator;
 import com.knou.domain.Log;
+import com.knou.exception.CalculatorException;
 import com.knou.exception.DivisionByZeroException;
 import com.knou.repository.LogRepository;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class CalculatorService {
      * 계산식을 계산하고 결과를 저장하는 메서드
      * @return 계산 과정과 계산결과가 들어있는 log
      */
-    public Log calculateExpression(ArrayList<String> expression) throws DivisionByZeroException {
+    public Log calculateExpression(ArrayList<String> expression) throws CalculatorException {
         Calculator calculator = new Calculator(expression);
         Log log = Log.createLog(expression);
         logRepository.save(calculator.calculateStart(log));

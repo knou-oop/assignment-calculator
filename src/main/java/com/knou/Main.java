@@ -1,6 +1,7 @@
 package com.knou;
 
 import com.knou.controller.CalculatorController;
+import com.knou.domain.LogWriter;
 import com.knou.repository.LogRepository;
 import com.knou.service.CalculatorService;
 import com.knou.view.InputValidator;
@@ -17,7 +18,7 @@ public class Main {
      * @param args 커맨드 라인 인자 (사용하지 않음)
      */
     public static void main(String[] args) {
-        View view = new View(new InputValidator());
+        View view = new View(new InputValidator(),new LogWriter());
         CalculatorService calculatorService = new CalculatorService(new LogRepository());
         CalculatorController calculatorController = new CalculatorController(view, calculatorService);
         calculatorController.calculatorRun();

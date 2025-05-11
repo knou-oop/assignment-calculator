@@ -68,7 +68,7 @@ public class Log {
     }
 
     public String getHistoryLog(){
-        return "["+LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))+"] "
+        return "["+timeTemplate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))+"] "
                 +expression + " " +result;
     }
 

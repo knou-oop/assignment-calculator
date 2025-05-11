@@ -1,5 +1,6 @@
 package com.knou.view;
 
+import com.knou.exception.CalculatorException;
 import com.knou.exception.InvalidNumberFormatException;
 import com.knou.exception.InvalidOperatorFormatException;
 
@@ -10,7 +11,7 @@ public class InputValidator {
     /**
      * 입력된 숫자의 유효성을 검증하는 메서드
      */
-    public void validateNumber(String inputNumber) throws InvalidNumberFormatException {
+    public void validateNumber(String inputNumber) throws CalculatorException {
         if (!inputNumber.matches(NUMBER_REGEX)) {
             throw new InvalidNumberFormatException();
         }
@@ -19,7 +20,7 @@ public class InputValidator {
     /**
      * 입력된 연산자의 유효성을 검증하는 메서드
      */
-    public void validateOperator(String input) throws InvalidOperatorFormatException {
+    public void validateOperator(String input) throws CalculatorException {
         if (input.matches(OPERATOR_REGEX)) {
             return;
         }

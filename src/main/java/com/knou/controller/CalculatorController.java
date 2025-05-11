@@ -31,7 +31,6 @@ public class CalculatorController {
             if(view.shouldContinue()){
                 calculatorRun();
             }else {
-
                 ArrayList<Log> allHistory = calculatorService.getAllHistory();
                 view.displayAllHistory(allHistory);
             }
